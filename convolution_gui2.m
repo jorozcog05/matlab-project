@@ -1,39 +1,87 @@
 function convolution_gui2()
     % Create figure
-    fig = figure('Name', 'Graphical Convolution Demo', ...
+    fig = uifigure('Name', 'Graphical Convolution Demo', ...
                  'NumberTitle', 'off', ...
                  'Position', [100, 100, 800, 650]);  % Increased figure height
 
-    % Dropdown menus for input and impulse response selection (Moved higher)
-    uicontrol('Style', 'text', 'Position', [120 630 120 20], 'String', 'Input Signal');
-    inputMenu = uicontrol('Style', 'popupmenu', 'Position', [120 600 180 30], ...
-                          'String', {'Rectangular Pulse', 'Triangular Pulse', 'Exponential Decay', 'Sine Wave', 'Unit Step'});
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %                        MAIN WINDOW PANEL
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    uicontrol('Style', 'text', 'Position', [500 630 140 20], 'String', 'Impulse Response');
-    impulseMenu = uicontrol('Style', 'popupmenu', 'Position', [500 600 180 30], ...
-                            'String', {'Rectangular Pulse', 'Triangular Pulse', 'Exponential Decay', 'Sine Wave', 'Unit Step'});
+    main_panel = uipanel(fig,'Position', [1, 1, 800, 650]);
+    convolution_panel = uipanel(fig,'Position', [1, 1, 800, 650],Visible='off');
+    statistics_panel = uipanel(fig,'Position', [1, 1, 800, 650],Visible='off');
+
+
+    % Button to go to convolution
+    uicontrol(main_panel,'Style', 'pushbutton', 'Position', [320 600 150 30], ...
+        'String', 'General Graphical Convolution', ...
+        'Callback', @(src,event) convolution_button_callback(main_panel,convolution_panel));
+    
+    % Button to go to statistics
+    uicontrol(main_panel,'Style', 'pushbutton', 'Position', [320 500 150 30], ...
+        'String', 'Probability and Statistics', ...
+        'Callback', @(src,event) statistics_button_callback(main_panel,statistics_panel));
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %                        CONVOLUTION PANEL
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+       
+    % Dropdown menus for input and impulse response selection (Moved higher)
+    uicontrol(convolution_panel,'Style', 'text', 'Position', [120 630 120 20], ...
+        'String', 'Input Signal');
+    inputMenu = uicontrol(convolution_panel,'Style', 'popupmenu', ...
+        'Position', [120 600 180 30], ...
+        'String', {'Rectangular Pulse', 'Triangular Pulse', ...
+        'Exponential Decay', 'Sine Wave', 'Unit Step'});
+
+    uicontrol(convolution_panel,'Style', 'text', 'Position', [500 630 140 20], ...
+        'String', 'Impulse Response');
+    impulseMenu = uicontrol(convolution_panel,'Style', 'popupmenu', ...
+        'Position', [500 600 180 30], ...
+        'String', {'Rectangular Pulse', 'Triangular Pulse', ...
+        'Exponential Decay', 'Sine Wave', 'Unit Step'});
 
     % Button to compute and visualize convolution (Moved higher)
-    uicontrol('Style', 'pushbutton', 'Position', [320 600 150 30], 'String', 'Run Convolution', ...
-              'Callback', @(src,event) runConvolution(fig, inputMenu, impulseMenu));
+    uicontrol(convolution_panel,'Style', 'pushbutton', 'Position', [320 600 150 30], ...
+        'String', 'Run Convolution', ...
+        'Callback', @(src,event) runConvolution(fig, inputMenu, impulseMenu));
 
     % Axes for plotting
-    ax1 = axes('Position', [0.1 0.65 0.35 0.25]); 
+    ax1 = axes(convolution_panel,'Position', [0.1 0.65 0.35 0.25]); 
     title(ax1, 'Input Signal'); xlabel(ax1, 'Time'); ylabel(ax1, 'Amplitude');
     grid(ax1, 'on');
 
-    ax2 = axes('Position', [0.55 0.65 0.35 0.25]); 
+    ax2 = axes(convolution_panel,'Position', [0.55 0.65 0.35 0.25]); 
     title(ax2, 'Impulse Response'); xlabel(ax2, 'Time'); ylabel(ax2, 'Amplitude');
     grid(ax2, 'on');
 
-    ax3 = axes('Position', [0.1 0.25 0.8 0.35]); 
-    title(ax3, 'Graphical Convolution Animation'); xlabel(ax3, 'Time'); ylabel(ax3, 'Amplitude');
+    ax3 = axes(convolution_panel,'Position', [0.1 0.25 0.8 0.35]); 
+    title(ax3, 'Graphical Convolution Animation'); xlabel(ax3, 'Time'); ...
+        ylabel(ax3, 'Amplitude');
     grid(ax3, 'on');
 
     % Store axes handles in the figure for later access
-    setappdata(fig, 'ax1', ax1);
-    setappdata(fig, 'ax2', ax2);
-    setappdata(fig, 'ax3', ax3);
+    % setappdata(fig, 'ax1', ax1);
+    % setappdata(fig, 'ax2', ax2);
+    % setappdata(fig, 'ax3', ax3);
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %                           STATISTICS PANEL
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    
+
+end
+
+function convolution_button_callback(main_panel,convolution_panel)
+    main_panel.Visible = "off";
+    convolution_panel.Visible = "on";
+end
+
+function statistics_button_callback(main_panel,statistics_panel)
+    main_panel.Visible = "off";
+    statistics_panel.Visible = "on";
 end
 
 function runConvolution(fig, inputMenu, impulseMenu)
@@ -92,7 +140,7 @@ function runConvolution(fig, inputMenu, impulseMenu)
         legend(ax3, 'Input Signal', 'Flipped & Shifted Impulse', 'Convolution Result');
         ylim(ax3, [-0.5, 2.5]);
         grid(ax3, 'on');
-        pause(0.1);
+        pause(0.01);
     end
 end
 
