@@ -12,7 +12,6 @@ function convolution_gui2()
     convolution_panel = uipanel(fig,'Position', [1, 1, 800, 650],Visible='off');
     statistics_panel = uipanel(fig,'Position', [1, 1, 800, 650],Visible='off');
 
-
     % Button to go to convolution
     uicontrol(main_panel,'Style', 'pushbutton', 'Position', [320 600 150 30], ...
         'String', 'General Graphical Convolution', ...
@@ -27,65 +26,59 @@ function convolution_gui2()
     %                        CONVOLUTION PANEL
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
        
-    % Dropdown menus for input and impulse response selection (Moved higher)
+
     uicontrol(convolution_panel,'Style', 'text', 'Position', [120 630 120 20], ...
         'String', 'Input Signal');
    
     uicontrol(convolution_panel,'Style', 'text', 'Position', [500 630 140 20], ...
         'String', 'Impulse Response');
     
-     samplitude_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [100 586 140 20], ...
+     xamplitude_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [100 586 140 20], ...
         'String', 'Amplitude');
-     sduration_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [100 571 140 20], ...
+     xduration_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [100 571 140 20], ...
         'String', 'Duration');
-     sstart_time_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [100 556 140 20], ...
+     uicontrol(convolution_panel,'Style', 'text', 'Position', [100 556 140 20], ...
         'String', 'Start time');
-     send_time_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [100 541 140 20], ...
+     uicontrol(convolution_panel,'Style', 'text', 'Position', [100 541 140 20], ...
         'String', 'End Time');
-     stime_step_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [100 526 140 20], ...
+     uicontrol(convolution_panel,'Style', 'text', 'Position', [100 526 140 20], ...
         'String', 'Time Step');
 
-     ramplitude_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [450 586 140 20], ...
+     hamplitude_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [450 586 140 20], ...
         'String', 'Amplitude');
-     rduration_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [450 571 140 20], ...
+     hduration_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [450 571 140 20], ...
         'String', 'Duration');
-     rstart_time_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [450 556 140 20], ...
-        'String', 'Start time');
-     rend_time_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [450 541 140 20], ...
-        'String', 'End Time');
-     rtime_step_label = uicontrol(convolution_panel,'Style', 'text', 'Position', [450 526 140 20], ...
-        'String', 'Time Step');
 
+     xamplitude = uieditfield(convolution_panel,"numeric",'Position', [200 590 100 15], "Limits",[0 5],'Value',1);
+     xcustom = uieditfield(convolution_panel,"text",'Position', [200 590 100 15], 'Visible', 'off');
+     xduration = uieditfield(convolution_panel,"numeric",'Position', [200 574 100 15], "Limits",[0 5],'Value',2);
+     start_time = uieditfield(convolution_panel,"numeric",'Position', [200 559 100 15], "Limits",[-20 0],'Value',-5);
+     end_time = uieditfield(convolution_panel,"numeric",'Position', [200 544 100 15], "Limits",[0 20],'Value',5);
+     time_step = uieditfield(convolution_panel,"numeric",'Position', [200 529 100 15], "Limits",[0.001 1],'Value',0.02);
 
-     samplitude = uieditfield(convolution_panel,"numeric",'Position', [200 590 100 15], "Limits",[0 100]);
-     sduration = uieditfield(convolution_panel,"numeric",'Position', [200 574 100 15], "Limits",[0 100]);
-     sstart_time = uieditfield(convolution_panel,"numeric",'Position', [200 559 100 15], "Limits",[0 100]);
-     send_time = uieditfield(convolution_panel,"numeric",'Position', [200 544 100 15], "Limits",[0 100]);
-     stime_step = uieditfield(convolution_panel,"numeric",'Position', [200 529 100 15], "Limits",[0 100]);
+     hamplitude = uieditfield(convolution_panel,"numeric",'Position', [550 590 100 15], "Limits",[0 5],'Value',1);
+     hcustom = uieditfield(convolution_panel,"text",'Position', [550 590 100 15], 'Visible', 'off');
+     hduration = uieditfield(convolution_panel,"numeric",'Position', [550 574 100 15], "Limits",[0 5],'Value',2);
 
-     ramplitude = uieditfield(convolution_panel,"numeric",'Position', [550 590 100 15], "Limits",[0 100]);
-     rduration = uieditfield(convolution_panel,"numeric",'Position', [550 574 100 15], "Limits",[0 100]);
-     rstart_time = uieditfield(convolution_panel,"numeric",'Position', [550 559 100 15], "Limits",[0 100]);
-     rend_time = uieditfield(convolution_panel,"numeric",'Position', [550 544 100 15], "Limits",[0 100]);
-     rtime_step = uieditfield(convolution_panel,"numeric",'Position', [550 529 100 15], "Limits",[0 100]);
-
+    % Dropdown menus for input and impulse response selection (Moved higher)
      inputMenu = uicontrol(convolution_panel,'Style', 'popupmenu', ...
         'Position', [120 600 180 30], ...
         'String', {'Rectangular Pulse', 'Triangular Pulse', ...
         'Exponential Decay', 'Sine Wave', 'Unit Step','Ramp','Custom'}, ...
-        'Callback', @(src,event) signal_selection(src,event,samplitude_label,sduration_label,sduration,'x(t) = '));
+        'Callback', @(src,event) signal_selection(src,xamplitude_label,xduration_label,xamplitude,xcustom,xduration,'x(t) = '));
 
      impulseMenu = uicontrol(convolution_panel,'Style', 'popupmenu', ...
         'Position', [500 600 180 30], ...
         'String', {'Rectangular Pulse', 'Triangular Pulse', ...
         'Exponential Decay', 'Sine Wave', 'Unit Step','Ramp','Custom'}, ...
-        'Callback', @(src,event) signal_selection(src,event,ramplitude_label,rduration_label,rduration,'h(t) = '));
+        'Callback', @(src,event) signal_selection(src,hamplitude_label,hduration_label,hamplitude,hcustom,hduration,'h(t) = '));
     
 
     % Button to compute and visualize convolution (Moved higher)
     uicontrol(convolution_panel,'Style', 'pushbutton', 'Position', [320 600 150 30], ...
         'String', 'Run Convolution', ...
-        'Callback', @(src,event) runConvolution(fig, inputMenu, impulseMenu));
+        'Callback', @(src,event) runConvolution(fig, inputMenu, impulseMenu,xamplitude,xcustom, ...
+            xduration,start_time,end_time,time_step,hamplitude,hcustom,hduration));
 
     % Button to go back to main menu
     uicontrol(convolution_panel,'Style', 'pushbutton', 'Position', [100 15 150 20], ...
@@ -117,15 +110,19 @@ function convolution_gui2()
 
 end
 
-function signal_selection(src,event,amplitude_label,duration_label,duration,amplitude_label_value)
+function signal_selection(src,amplitude_label,duration_label,amplitude,custom,duration,amplitude_label_value)
     inputIdx = get(src, 'Value');
     if inputIdx == 7
         % Custom
         amplitude_label.String = amplitude_label_value;
+        amplitude.Visible = "off";
+        custom.Visible = "on";
         duration_label.Visible = "off";
         duration.Visible = "off";
     else
         amplitude_label.String = 'amplitude';
+        amplitude.Visible = "on";
+        custom.Visible = "off";
         duration_label.Visible = "on";
         duration.Visible = "on";
     end
@@ -147,22 +144,30 @@ function exit_button_callback(main_panel,convolution_panel)
 end
 
 
-function runConvolution(fig, inputMenu, impulseMenu)
-    % Time vector
-    dt = 0.02;  
-    t = -5:dt:5; 
+function runConvolution(fig, inputMenu, impulseMenu,samplitude,scustom, ...
+    sduration,sstart_time,send_time,stime_step,ramplitude,rcustom,rduration)
+    % Time vector 
     
+    start_t = get(sstart_time,'Value');
+    end_t = get(send_time,'Value');
+    dt = get(stime_step,'Value');
+    t = start_t:dt:end_t;
+
+    xamplitude = get(samplitude,'Value');
+    xcustom = get(scustom,'Value');
+    xduration = get(sduration,'Value');
+
+    hamplitude = get(ramplitude,'Value');
+    hcustom = get(rcustom,'Value');
+    hduration = get(rduration,'Value');
+
     % Get user selections
     inputIdx = get(inputMenu, 'Value');
     impulseIdx = get(impulseMenu, 'Value');
     
     % Generate selected signals
-    x = getFunction(inputIdx, t);
-    h = getFunction(impulseIdx, t);
-    
-    % Compute convolution
-    conv_result = conv(x, h, 'same') * dt; 
-    t_conv = linspace(2*min(t), 2*max(t), length(conv_result));
+    x = getFunction(inputIdx, t,xamplitude,xcustom,xduration);
+    h = getFunction(impulseIdx, t,hamplitude,hcustom,hduration);
 
     % Retrieve stored axes handles from figure
     ax1 = getappdata(fig, 'ax1');
@@ -189,7 +194,7 @@ function runConvolution(fig, inputMenu, impulseMenu)
         
         % Flipped and shifted impulse response
         %flipped_h = getFunction(impulseIdx, t - tau);
-        flipped_h = getFunction(impulseIdx, -t + tau);
+        flipped_h = getFunction(impulseIdx, -t + tau,hamplitude,hcustom,hduration);
 
         % Compute convolution at this shift
         conv_values(i) = sum(x .* flipped_h) * dt;
@@ -207,21 +212,27 @@ function runConvolution(fig, inputMenu, impulseMenu)
     end
 end
 
-function y = getFunction(index, t)
+function y = getFunction(index, tin,amplitude,custom,duration)
     % Function selector based on dropdown index
     switch index
         case 1 % Rectangular Pulse
-            y = (t >= -1 & t <= 1);
+            y = amplitude*(tin >= -duration/2 & tin <= duration/2);
         case 2 % Triangular Pulse
-            y = (1 - abs(t)) .* (abs(t) <= 1);
+            y = amplitude*((1 - abs(tin)) .* (abs(tin) <= duration/2));
         case 3 % Exponential Decay
-            y = exp(-abs(t)) .* (t >= 0);
+            y = amplitude*(exp(-abs(tin)) .* (tin >= 0));
         case 4 % Sine Wave
-            y = sin(2 * pi * 0.5 * t) .* (abs(t) <= 2);
+            y = amplitude*(sin(2 * pi * 0.5 * tin) .* (abs(tin) <= duration/2));
         case 5 % Unit Step Function
-            y = (t >= 0);  % Heaviside step function
+            y = amplitude*(tin >= 0);  % Heaviside step function
         case 6 % Ramp function
-            y = t.*(t>=0); % Ramp Function
-        case 7 % Custom 
+            y = tin.*(tin>=0); % Ramp Function
+        case 7 % Custom
+            custom = "@(t)" + custom;
+            f = str2func(custom);
+            y = [];
+            for i = tin
+                y = [y,f(i)];
+            end
     end
 end
