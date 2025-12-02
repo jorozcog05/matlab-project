@@ -94,7 +94,7 @@ function convolution_gui2()
     % Button to go back to main menu
     uicontrol(convolution_panel,'Style', 'pushbutton', 'Position', [100 15 150 25], ...
         'String', 'Exit', ...
-        'Callback', @(src,event) exit_button_callback(fig, main_panel,convolution_panel));
+        'Callback', @(src,event) exit_button_callback(main_panel,convolution_panel));
 
     % Axes for plotting
     p1_ax1 = axes(convolution_panel,'Position', [0.1 0.52 0.35 0.25]); 
@@ -194,7 +194,8 @@ function convolution_gui2()
         'String', {'Rectangular Pulse', 'Triangular Pulse', ...
         'Exponential Decay', 'Sine Wave', 'Unit Step','Ramp','Custom'}, ...
         'Callback', @(src,event) signal_selection(src,p2_hamplitude_label,...
-        p2_hduration_label,p2_hamplitude,p2_hcustom,p2_hduration,'h(t) = '));
+        p2_hduration_label,p2_hamplitude,p2_hcustom,p2_hduration,...
+        text1_label,text2_label,text3_label,text4_label,text5_label,text6_label,'h(t) = '));
     
 
     % Button to toggle
@@ -212,7 +213,7 @@ function convolution_gui2()
 
 
     % Button to check
-    uicontrol(statistics_panel,'Style', 'pushbutton', 'Position', [320 520 150 30], ...
+    uicontrol(statistics_panel,'Style', 'pushbutton', 'Position', [320 560 150 30], ...
         'String', 'Checks', ...
         'Callback', @(src,event) calculate_statistics(fig, p2_inputMenu, p2_impulseMenu,p2_xamplitude,p2_xcustom, ...
             p2_xduration,p2_start_time,p2_end_time,p2_time_step,p2_hamplitude,p2_hcustom,p2_hduration,l1,l2,l3,l4,l5,l6,'check'));
@@ -221,7 +222,7 @@ function convolution_gui2()
     % Button to go back to main menu
     uicontrol(statistics_panel,'Style', 'pushbutton', 'Position', [100 15 150 25], ...
         'String', 'Exit', ...
-        'Callback', @(src,event) exit_button_callback(fig, main_panel,statistics_panel));
+        'Callback', @(src,event) exit_button_callback(main_panel,statistics_panel));
 
     % Axes for plotting
     p2_ax1 = axes(statistics_panel,'Position', [0.1 0.52 0.35 0.25]); 
@@ -242,7 +243,7 @@ function convolution_gui2()
         'String', 'Reset', ...
         'Callback', @(src,event) reset_button_callback(fig,p2_inputMenu,p2_impulseMenu,p2_xamplitude,p2_xcustom, ...
             p2_xduration,p2_start_time,p2_end_time,p2_time_step,p2_hamplitude,p2_hcustom,p2_hduration,p2_xamplitude_label,...
-            p2_xduration_label,p2_hamplitude_label,p2_hduration_label,p2_ax1,p2_ax2,p2_ax3));   
+            p2_xduration_label,p2_hamplitude_label,p2_hduration_label,p2_ax1,p2_ax2,ax3));   
 
     % Store axes handles in the figure for later access
     setappdata(fig, 'p2_ax1', p2_ax1);
@@ -279,7 +280,7 @@ function statistics_button_callback(main_panel,statistics_panel)
     statistics_panel.Visible = "on";
 end
 
-function exit_button_callback(fig, main_panel,convolution_panel)
+function exit_button_callback(main_panel,convolution_panel)
     main_panel.Visible = "on";
     convolution_panel.Visible = "off";
     setappdata(fig, 'isPaused', true);
@@ -465,14 +466,12 @@ function calculate_statistics(fig, inputMenu, impulseMenu,samplitude,scustom, ..
         l5.String = "V(h) = " + Vh;
         l6.String = "V(y) = " + Vy;
     else
-        Exh = Ex + Eh;
-        l1.String = "E(x) + E(h) = " + Exh;
+        l1.String = "E(x) + E(h) = " + Ex + Eh;
         l2.String = "E(y) = " + Ey;
-        Vxh = Vx + Vh;
-        l3.String = "V(x) + V(h) = " + Vxh;
+        l3.String = "V(x) + V(h) = " + Vx + Vh;
         l4.String = "V(y) = " + Vy;
-        l5.String = "∫x(t)dt = " + qx + ",  ∫ h(t)dt = " + qh;
-        l6.String = "∫ y(t)dt = " + qy;
+        l5.String = "\int x(t)dt = " + Vh;
+        l6.String = "V(y) = " + Vy;
     end
     
 
